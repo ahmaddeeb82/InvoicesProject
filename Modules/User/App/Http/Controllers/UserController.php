@@ -8,8 +8,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\User\app\DTOs\UserDTO;
+use Modules\User\app\Http\Requests\EditProfileRequest;
 use Modules\User\app\Http\Requests\LoginRequest;
 use Modules\User\app\Http\Requests\RegisterReauest;
+use Modules\User\app\Http\Requests\GetUserRequest;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\app\Services\UserService;
 
@@ -25,10 +27,11 @@ class UserController extends Controller
             $request->permissions,
         );
 
+        (new UserService(new UserRepository($userDto)))->createUser();
+
         return ApiResponse::apiSendResponse(
             201,
             __('messages.registered'),
-            (new UserService(new UserRepository($userDto)))->createUser()
         );
         
     }
@@ -47,6 +50,44 @@ class UserController extends Controller
             $response['message'],
             $response['data']
         );
+    }
 
+    public function updateUser(EditProfileRequest $request) {
+        
+        $userDto = new UserDTO(
+            $request->id,
+            $request->name,
+            $request->username,
+            $request->password,
+            $request->permissions,
+        );
+
+        (new UserService(new UserRepository($userDto)))->updateUser();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.updated'),
+        );
+    }
+
+    public function listUsers() {
+        return  ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new UserService(new UserRepository()))->listUsers()
+        );
+    }
+
+    public function getUser(GetUserRequest $request) {
+
+        $userDto = new UserDTO(
+            $request->id,
+        );
+
+        return  ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new UserService(new UserRepository($userDto)))->getUSerById()
+        );
     }
 }

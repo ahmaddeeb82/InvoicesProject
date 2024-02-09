@@ -2,10 +2,13 @@
 
 namespace Modules\User\app\Services;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\app\DTOs\UserDTO;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\User\App\resources\AllUserResource;
 use Modules\User\app\Resources\AuthResource;
+use Modules\User\App\resources\UserResource;
 
 class UserService {
 
@@ -16,7 +19,7 @@ class UserService {
         $this->repository = $repository;
     }
 
-    public function createUser(){
+    public function createUser() {
 
         $user = $this->repository->createUser();
         
@@ -26,16 +29,12 @@ class UserService {
             $user->givePermissionTo($this->repository->dtoArray['permissions']);
         }
         
-        return new AuthResource([
-            'id' => $user->id,
-            'token' => $user->createToken('husain')->plainTextToken
-        ]);
     }
 
     public function checkLogin() {
         $user = $this->repository->callLoginUser();
 
-        if(Hash::check($this->repository->dtoArray['password'], $user->password))
+        if($this->repository->dtoArray['password'] == Crypt::decryptString($user->password))
         {
             return [
                 'code' => 200,
@@ -53,5 +52,28 @@ class UserService {
                 'data' => [],
             ];
         }
+    }
+
+    public function updateUser() {
+        $user = $this->repository->updateProfile();
+
+        if(count($this->repository->dtoArray['permissions']) != 0) {
+            $user->syncPermissions($this->repository->dtoArray['permissions']);
+        } else {
+            $permissions = $user->getAllPermissions();
+            $user->revokePermissionTo($permissions);
+        }
+    }
+
+    public function listUsers() {
+        $users = $this->repository->getAllUSers();
+
+        return AllUserResource::collection($users);
+    }
+    
+    public function getUSerById() {
+        $user = $this->repository->getUserByID();
+
+        return  new UserResource($user);
     }
 }

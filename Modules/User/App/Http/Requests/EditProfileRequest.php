@@ -5,10 +5,10 @@ namespace Modules\User\app\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator; 
 use App\Exceptions\MyValidationException;
+use Modules\User\App\Models\User;
 
-class RegisterReauest extends FormRequest
+class EditProfileRequest extends FormRequest
 {
-
     protected $stopOnFirstFailure = true;
 
 
@@ -24,7 +24,7 @@ class RegisterReauest extends FormRequest
         return [
             'id' => 'integer|exists:users,id',
             'name' => 'required',
-            'username' => 'required|unique:users|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
+            'username' => 'required|unique:users,username,'.$this->id.'|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
             'permissions' => 'present|array',
             'permissions.*' => 'string|in:export-pdf,export-excel',
             'password' => 'required|min:6',

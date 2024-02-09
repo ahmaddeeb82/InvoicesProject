@@ -4,6 +4,7 @@ namespace Modules\User\Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\App\Models\User as ModelsUser;
 use Spatie\Permission\Models\Permission;
@@ -30,7 +31,7 @@ class UserDatabaseSeeder extends Seeder
         $user = ModelsUser::create([
             'name' => 'Ashraf Sroujy',
             'username' => 'ashraf',
-            'password' => Hash::make('123456'),
+            'password' => Crypt::encryptString('123456'),
             'role' => 'admin',
         ]);
 

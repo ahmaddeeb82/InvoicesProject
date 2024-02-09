@@ -21,6 +21,12 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 
 Route::post('login', [UserController::class, 'login']);
 
-Route::middleware(['auth:sanctum', 'role:Admin'])->group(function() {
-    Route::post('add_user', [UserController::class, 'addUser']);
+Route::middleware(['auth:sanctum', 'role:Admin'])
+->controller(Modules\User\app\Http\Controllers\UserController::class)
+->prefix('users')
+->group(function() {
+    Route::post('add',  'addUser');
+    Route::get('list',  'listUsers');
+    Route::get('get',  'getUser');
+    Route::post('update',  'updateUser');
 });

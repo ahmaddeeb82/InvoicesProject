@@ -4,6 +4,7 @@ namespace Modules\User\app\DTOs;
 
 class UserDTO
 {
+    public int $id;
     public string $name;
     public string $username;
     public string $password;
@@ -29,10 +30,24 @@ class UserDTO
         $this->permissions = $permissions;
     }
 
+    public function __construct5(int $id,string $name, string $username, string $password, $permissions)
+    {
+        $this->id = $id;
+        $this->name =  $name;
+        $this->username = $username;
+        $this->password = $password;
+        $this->role = 'user';
+        $this->permissions = $permissions;
+    }
 
     public function __construct2(string $username, string $password)
     {
         $this->username = $username;
         $this->password = $password;
+    }
+
+    public function __construct1(int $id)
+    {
+        $this->id = $id;
     }
 }
