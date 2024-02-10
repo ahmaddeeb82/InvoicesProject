@@ -16,6 +16,7 @@ return [
     'registered' => 'Registered Successfully!',
     'loggedin' => 'Logged On Successfully!',
     'updated' => 'User Inforamtions Has Been Updated Successfully!',
-    'retrieved' => 'Data HAs Been Retrieved Successfully!',
+    'retrieved' => 'Data Has Been Retrieved Successfully!',
+    'deleted' => 'Data Has Been Deleted Successfully!',
 
 ];

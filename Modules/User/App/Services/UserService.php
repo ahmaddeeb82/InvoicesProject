@@ -57,6 +57,8 @@ class UserService {
     public function updateUser() {
         $user = $this->repository->updateProfile();
 
+        $user->tokens()->delete();
+
         if(count($this->repository->dtoArray['permissions']) != 0) {
             $user->syncPermissions($this->repository->dtoArray['permissions']);
         } else {
@@ -75,5 +77,9 @@ class UserService {
         $user = $this->repository->getUserByID();
 
         return  new UserResource($user);
+    }
+
+    public function  deleteUser() {
+        $this->repository->deleteUser();
     }
 }

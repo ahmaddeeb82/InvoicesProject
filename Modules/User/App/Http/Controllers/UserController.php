@@ -90,4 +90,17 @@ class UserController extends Controller
             (new UserService(new UserRepository($userDto)))->getUSerById()
         );
     }
+
+    public function deleteUser(GetUserRequest $request) {
+        $userDto = new UserDTO(
+            $request->id,
+        );
+
+        (new UserService(new UserRepository($userDto)))->deleteUser();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.deleted'),
+        );
+    }
 }

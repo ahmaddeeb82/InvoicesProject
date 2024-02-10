@@ -67,4 +67,11 @@ class UserRepository
             fn ($user) => $user->roles->where('name', 'User')->toArray()
         );
     }
+
+    public function  deleteUser() {
+        $user = $this->getUserByID();
+
+        $user->delete();
+    }
+    
 }

@@ -21,7 +21,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 
 Route::post('login', [UserController::class, 'login']);
 
-Route::middleware(['auth:sanctum', 'role:Admin'])
+Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
 ->controller(Modules\User\app\Http\Controllers\UserController::class)
 ->prefix('users')
 ->group(function() {
@@ -29,4 +29,5 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
     Route::get('list',  'listUsers');
     Route::get('get',  'getUser');
     Route::post('update',  'updateUser');
+    Route::delete('delete',  'deleteUser');
 });
