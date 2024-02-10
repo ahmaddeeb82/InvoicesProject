@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Http\Controllers\UserController;
 
 /*
     |--------------------------------------------------------------------------
@@ -16,4 +17,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
     Route::get('user', fn (Request $request) => $request->user())->name('user');
+});
+
+Route::post('login', [UserController::class, 'login']);
+
+Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
+->controller(Modules\User\app\Http\Controllers\UserController::class)
+->prefix('users')
+->group(function() {
+    Route::post('add',  'addUser');
+    Route::get('list',  'listUsers');
+    Route::get('get',  'getUser');
+    Route::post('update',  'updateUser');
+    Route::delete('delete',  'deleteUser');
 });

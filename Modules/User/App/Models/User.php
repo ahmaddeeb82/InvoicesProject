@@ -24,6 +24,8 @@ class User extends Authenticatable
         'role',
     ];
 
+    protected $guard_name = "web";
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -39,7 +41,5 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'password' => 'hashed',
-    ];
+    
 }

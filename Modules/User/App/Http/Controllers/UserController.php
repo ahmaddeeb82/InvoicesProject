@@ -1,67 +1,106 @@
 <?php
 
-namespace Modules\User\App\Http\Controllers;
+namespace Modules\User\app\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\User\app\DTOs\UserDTO;
+use Modules\User\app\Http\Requests\EditProfileRequest;
+use Modules\User\app\Http\Requests\LoginRequest;
+use Modules\User\app\Http\Requests\RegisterReauest;
+use Modules\User\app\Http\Requests\GetUserRequest;
+use Modules\User\app\Repositories\UserRepository;
+use Modules\User\app\Services\UserService;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('user::index');
+
+    public function addUser(RegisterReauest $request) {
+        
+        $userDto = new UserDTO(
+            $request->name,
+            $request->username,
+            $request->password,
+            $request->permissions,
+        );
+
+        (new UserService(new UserRepository($userDto)))->createUser();
+
+        return ApiResponse::apiSendResponse(
+            201,
+            __('messages.registered'),
+        );
+        
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('user::create');
+    public function login(LoginRequest $request) {
+        
+        $userDto = new UserDTO(
+            $request->username,
+            $request->password,
+        );
+
+        $response = (new UserService(new UserRepository($userDto)))->checkLogin();
+
+        return ApiResponse::apiSendResponse(
+            $response['code'],
+            $response['message'],
+            $response['data']
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
+    public function updateUser(EditProfileRequest $request) {
+        
+        $userDto = new UserDTO(
+            $request->id,
+            $request->name,
+            $request->username,
+            $request->password,
+            $request->permissions,
+        );
+
+        (new UserService(new UserRepository($userDto)))->updateUser();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.updated'),
+        );
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('user::show');
+    public function listUsers() {
+        return  ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new UserService(new UserRepository()))->listUsers()
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('user::edit');
+    public function getUser(GetUserRequest $request) {
+
+        $userDto = new UserDTO(
+            $request->id,
+        );
+
+        return  ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new UserService(new UserRepository($userDto)))->getUSerById()
+        );
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
+    public function deleteUser(GetUserRequest $request) {
+        $userDto = new UserDTO(
+            $request->id,
+        );
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        (new UserService(new UserRepository($userDto)))->deleteUser();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.deleted'),
+        );
     }
 }
