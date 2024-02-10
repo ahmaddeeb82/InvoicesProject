@@ -17,13 +17,24 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $data =  Invoice::where('GUID' , 'E1B41468-06A0-48D1-9ED4-0000489E6C39')->first();
-        // dd($data);
-        // return "we";
-        // return
-        // "Done";
-        // Invoice::where('GUID' , 'E1B41468-06A0-48D1-9ED4-0000489E6C39')->first();
-        return response()->json($data) ;
+        // for($i=20 ; $i<Invoice::all()->count();$i+=20){
+            $data = Invoice::where('PayType', '1')->paginate(20 , ['Branch', 'Date', 'GUID', 'Total']);
+
+            $paginationInfo = [
+                'current_page' => $data->currentPage(),
+                'total' => $data->total(),
+                'per_page' => $data->perPage(),
+                'last_page' => $data->lastPage(),
+                'next_page_url' => $data->nextPageUrl(),
+                'prev_page_url' => $data->previousPageUrl(),
+            ];
+
+            return response()->json([
+                'data' => $data->items(),
+                'pagination' => $paginationInfo
+            ]);
+
+        // return response()->json($data);
 
 
     }

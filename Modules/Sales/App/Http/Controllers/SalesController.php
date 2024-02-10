@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Sales\App\Models\Sales;
 
 class SalesController extends Controller
 {
@@ -14,7 +15,20 @@ class SalesController extends Controller
      */
     public function index()
     {
-        return view('sales::index');
+       $data = Sales::where('Code', '>' , 2 )->paginate(20 , ['Name', 'Code', 'GUID']);
+       $paginationInfo = [
+        'current_page' => $data->currentPage(),
+        'total' => $data->total(),
+        'per_page' => $data->perPage(),
+        'last_page' => $data->lastPage(),
+        'next_page_url' => $data->nextPageUrl(),
+        'prev_page_url' => $data->previousPageUrl(),
+    ];
+
+    return response()->json([
+        'data' => $data->items(),
+        'pagination' => $paginationInfo
+    ]);
     }
 
     /**
