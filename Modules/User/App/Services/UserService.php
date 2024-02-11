@@ -82,4 +82,10 @@ class UserService {
     public function  deleteUser() {
         $this->repository->deleteUser();
     }
+
+    public function deleteToken() {
+        $user = auth()->user();
+        
+        $user->currentAccessToken()->delete();
+    }
 }

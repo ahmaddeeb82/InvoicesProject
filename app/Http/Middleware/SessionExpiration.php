@@ -20,9 +20,7 @@ class SessionExpiration
         if ($request->session()->has('last_request_time')){
             $last_request_time = $request->session()->get('last_request_time');
             $diff = time() - $last_request_time;
-            Log::debug("Last request time: {$last_request_time}, Current time: " . time() . ", Difference: {$diff}");
-            if ($diff <=   30) {
-                $user_active = true;
+            if ($diff <=   900) {
                 $request->session()->put('last_request_time', time());
                 return $next($request);
             }

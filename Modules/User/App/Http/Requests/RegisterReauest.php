@@ -22,7 +22,6 @@ class RegisterReauest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'integer|exists:users,id',
             'name' => 'required',
             'username' => 'required|unique:users|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
             'permissions' => 'present|array',

@@ -103,4 +103,15 @@ class UserController extends Controller
             __('messages.deleted'),
         );
     }
+
+    public function logout(GetUserRequest $request) {
+
+
+        (new UserService(new UserRepository()))->deleteToken();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.loggedout'),
+        );
+    }
 }

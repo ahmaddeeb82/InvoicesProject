@@ -13,10 +13,11 @@ return [
     |
     */
 
-    'registered' => 'Registered Successfully!',
-    'loggedin' => 'Logged On Successfully!',
+    'registered' => 'User Added Successfully!',
+    'loggedin' => 'Logged In Successfully!',
     'updated' => 'User Inforamtions Has Been Updated Successfully!',
     'retrieved' => 'Data Has Been Retrieved Successfully!',
     'deleted' => 'Data Has Been Deleted Successfully!',
+    'loggedout' => 'Logged Out Successfully!'
 
 ];
