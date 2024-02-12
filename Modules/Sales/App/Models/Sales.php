@@ -5,6 +5,7 @@ namespace Modules\Sales\App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Sales\Database\factories\SalesFactory;
+use Illuminate\Support\Facades\DB;
 
 class Sales extends Model
 {
@@ -14,6 +15,9 @@ class Sales extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
+
+    protected $connection = 'sqlsrv';
+
 
     protected $table = 'br000';
 

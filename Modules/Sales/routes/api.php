@@ -15,8 +15,12 @@ use Modules\Sales\App\Http\Controllers\SalesController;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('sales', fn (Request $request) => $request->user())->name('sales');
-});
+// Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
+//     Route::get('sales', fn (Request $request) => $request->user())->name('sales');
+// });
 
 Route::get('branch ' , [SalesController::class , "index"]);
+
+Route::get('getBranch' , [SalesController::class , "show"]);
+
+Route::get('getSortedBranches' , [SalesController::class , "GetGreatestBranchSales"]);

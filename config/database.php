@@ -92,6 +92,19 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
+        'sqlsrv_second' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST_SECOND'),
+            'port' => env('DB_PORT_SECOND'),
+            'database' => env('DB_DATABASE_SECOND'),
+            'username' => env('DB_USERNAME_SECOND'),
+            'password' => env('DB_PASSWORD_SECOND'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
+        ],
 
     ],
 

@@ -14,6 +14,8 @@ class Invoice extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
+
+    protected $connection = "sqlsrv";
     protected $table = 'bu000';
 
 }

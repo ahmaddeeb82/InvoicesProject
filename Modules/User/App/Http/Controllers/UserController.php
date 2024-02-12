@@ -19,7 +19,7 @@ class UserController extends Controller
 {
 
     public function addUser(RegisterReauest $request) {
-        
+
         $userDto = new UserDTO(
             $request->name,
             $request->username,
@@ -33,11 +33,11 @@ class UserController extends Controller
             201,
             __('messages.registered'),
         );
-        
+
     }
 
     public function login(LoginRequest $request) {
-        
+
         $userDto = new UserDTO(
             $request->username,
             $request->password,
@@ -53,7 +53,7 @@ class UserController extends Controller
     }
 
     public function updateUser(EditProfileRequest $request) {
-        
+
         $userDto = new UserDTO(
             $request->id,
             $request->name,

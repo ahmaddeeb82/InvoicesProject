@@ -2,80 +2,68 @@
 
 namespace Modules\Sales\App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Invoice\App\Models\Invoice;
+use Modules\Sales\App\Http\Requests\GetBranchSaleRequest;
 use Modules\Sales\App\Models\Sales;
-
+use Modules\Sales\App\Services\SalesService;
+use Modules\Sales\App\DTOs\SalesDTO;
 class SalesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+//    public SalesService $salesService;
+
     public function index()
     {
-       $data = Sales::where('Code', '>' , 2 )->paginate(20 , ['Name', 'Code', 'GUID']);
-       $paginationInfo = [
-        'current_page' => $data->currentPage(),
-        'total' => $data->total(),
-        'per_page' => $data->perPage(),
-        'last_page' => $data->lastPage(),
-        'next_page_url' => $data->nextPageUrl(),
-        'prev_page_url' => $data->previousPageUrl(),
-    ];
 
-    return response()->json([
-        'data' => $data->items(),
-        'pagination' => $paginationInfo
-    ]);
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)-> GetAllBranchesSales()
+        );
+
+    //    $paginationInfo = [
+    //     'current_page' => $data->currentPage(),
+    //     'total' => $data->total(),
+    //     'per_page' => $data->perPage(),
+    //     'last_page' => $data->lastPage(),
+    //     'next_page_url' => $data->nextPageUrl(),
+    //     'prev_page_url' => $data->previousPageUrl(),
+    // ];
+
+    // return response()->json([
+    //     'data' => $data->items(),
+    //     'pagination' => $paginationInfo
+    // ]);
+    // return response()->json($result);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(GetBranchSaleRequest $request)
     {
-        return view('sales::create');
+         $salesDTO = new SalesDTO(
+            $request->id,
+         );
+
+       return ApiResponse::apiSendResponse(
+        200,
+        __('messages.retrieved'),
+        (new SalesService)->GetById($salesDTO)
+       );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
+    public function GetGreatestBranchSales(){
+        $result =  (new SalesService)->GetGreatestBranchSales();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+           $result[0]
+        );
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('sales::show');
-    }
+    // public function GetBranchsSales
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('sales::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
