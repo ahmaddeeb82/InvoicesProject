@@ -60,10 +60,24 @@ class SalesController extends Controller
         return ApiResponse::apiSendResponse(
             200,
             __('messages.retrieved'),
-           $result[0]
+           $result
         );
     }
 
-    // public function GetBranchsSales
+    public function GetBranchsSales(){
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)->GetAllSalesValue()
+        );
+    }
+
+    public function GetSalesValueForMonth(){
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)->GetSalesValueForMonth()
+        );
+    }
 
 }

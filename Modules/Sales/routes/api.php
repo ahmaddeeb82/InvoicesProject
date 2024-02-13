@@ -24,3 +24,7 @@ Route::get('branch ' , [SalesController::class , "index"]);
 Route::get('getBranch' , [SalesController::class , "show"]);
 
 Route::get('getSortedBranches' , [SalesController::class , "GetGreatestBranchSales"]);
+
+Route::get('getSalesValue' , [SalesController::class , "GetBranchsSales"]);
+
+Route::get('GetSalesMonthly' , [SalesController::class , "GetSalesValueForMonth"]);
