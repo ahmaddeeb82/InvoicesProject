@@ -2,10 +2,13 @@
 
 namespace Modules\Sales\App\Services;
 
+use Modules\Invoice\App\Models\InvoiceType;
 use Modules\Sales\App\Resources\BranchSalesResource;
 use Modules\Invoice\App\Models\Invoice;
 use Modules\Sales\App\Models\Sales;
 use Modules\Sales\App\DTOs\SalesDTO;
+use Illuminate\Support\Facades\DB;
+
 
  class SalesService{
     public function __construct(){
@@ -15,8 +18,11 @@ use Modules\Sales\App\DTOs\SalesDTO;
     public function GetAllBranchesSales()
     {
         $Invoices = Invoice::where('PayType', '1')->get(['Branch', 'Date', 'GUID', 'Total']);
+        $InvoiceType = DB::connection('sqlsrv')->table('bu000')
+        ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
+        ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1') ->take(10)->get();
 
-        $branches = Sales::where('Code', '>', 2)->get(['Name', 'Code', 'GUID']);
+        $branches = Sales::where('Code', '>', 2)->get(['Name','Number' , 'Code', 'GUID']);
 
         $totals = [];
 
@@ -41,7 +47,8 @@ use Modules\Sales\App\DTOs\SalesDTO;
             }
         }
         // return new BranchSalesResource($salesDTO);
-        return $salesDTO;
+        return $InvoiceType;
+        // return $salesDTO;
     }
 
 
