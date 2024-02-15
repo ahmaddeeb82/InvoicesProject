@@ -72,12 +72,14 @@ class SalesController extends Controller
         );
     }
 
-    public function GetSalesValueForMonth(){
+    public function GetSalesValueForMonth(Request $request){
+        $date = $request->date;
         return ApiResponse::apiSendResponse(
             200,
             __('messages.retrieved'),
-            (new SalesService)->GetSalesValueForMonth()
+            (new SalesService)->GetSalesValueForMonth($date)
         );
     }
+
 
 }

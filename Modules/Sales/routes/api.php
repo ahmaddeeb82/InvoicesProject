@@ -19,12 +19,27 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 //     Route::get('sales', fn (Request $request) => $request->user())->name('sales');
 // });
 
-Route::get('branch ' , [SalesController::class , "index"]);
+Route::prefix('bracnhes-Sales')
+->controller(SalesController::class)
+->group(function () {
 
-Route::get('getBranch' , [SalesController::class , "show"]);
+    Route::get('All-branches' , "index");
 
-Route::get('getSortedBranches' , [SalesController::class , "GetGreatestBranchSales"]);
+    Route::get('getBranch' ,   "show");
 
-Route::get('getSalesValue' , [SalesController::class , "GetBranchsSales"]);
+    Route::get('getSortedBranches' , "GetGreatestBranchSales");
 
-Route::get('GetSalesMonthly' , [SalesController::class , "GetSalesValueForMonth"]);
+    Route::get('getSalesValue' , "GetBranchsSales");
+
+    Route::get('GetSalesMonthly',  "GetSalesValueForMonth");
+});
+
+// Route::get('branch ' , [SalesController::class , "index"]);
+
+// Route::get('getBranch' , [SalesController::class , "show"]);
+
+// Route::get('getSortedBranches' , [SalesController::class , "GetGreatestBranchSales"]);
+
+// Route::get('getSalesValue' , [SalesController::class , "GetBranchsSales"]);
+
+// Route::get('GetSalesMonthly' , [SalesController::class , "GetSalesValueForMonth"]);
