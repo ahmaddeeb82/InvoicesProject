@@ -32,6 +32,7 @@ Route::prefix('bracnhes-Sales')
     Route::get('getSalesValue' , "GetBranchsSales");
 
     Route::get('GetSalesMonthly',  "GetSalesValueForMonth");
+    Route::get('Search-For' , "searchForBranch");
 });
 
 // Route::get('branch ' , [SalesController::class , "index"]);

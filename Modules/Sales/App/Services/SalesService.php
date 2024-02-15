@@ -3,6 +3,7 @@
 namespace Modules\Sales\App\Services;
 
 use Modules\Invoice\App\Models\InvoiceType;
+use Modules\Sales\App\DTOs\SearchDTO;
 use Modules\Sales\App\Resources\BranchSalesResource;
 use Modules\Invoice\App\Models\Invoice;
 use Modules\Sales\App\Models\Sales;
@@ -106,9 +107,9 @@ use Modules\Sales\App\Respository\SalesRepository;
         $branch_sales = (new SalesRepository)->getBranchSales($branch);
 
         $salesDTO = [
-            'branch' => $branch->branchName,
-            'code' => $branch->branchCode,
-            'GUID' => $branch->branchGUID,
+            'branch' => $branch->Name,
+            'code' => $branch->Code,
+            'GUID' => $branch->GUID,
             'total_Sales' => $branch_sales
         ];
 
@@ -143,6 +144,30 @@ use Modules\Sales\App\Respository\SalesRepository;
         return (new SalesRepository())->getTotalSalesValueAtMonth($selected_month);
     }
 
+   public function SearchForBranch($searchDTO)
+    {
+        // $data = $searchDTO;
+        // $Name_column = 'Name';
 
+        $NameResult = (new SalesRepository())->searchByName($searchDTO);
+
+        // $Code_column = 'Code';
+        $CodeResult =  (new SalesRepository())->searchByCode($searchDTO);
+
+        $result = [];
+
+        if($NameResult != null){
+            $result[]= [$NameResult];
+        }
+        if($CodeResult != null){
+            $result[]=[$CodeResult];
+        }
+        // dd($result);
+
+
+        return $result;
+
+        // $result = $this->
+    }
 
 }

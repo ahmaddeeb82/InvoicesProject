@@ -81,5 +81,17 @@ class SalesController extends Controller
         );
     }
 
+    public function searchForBranch(Request $request)
+    {
+        $data = $request->param;
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)->SearchForBranch($data)
+        );
+
+    }
+
 
 }

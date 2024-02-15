@@ -1,7 +1,6 @@
 <?php
-namespace Modules\Sales\App\DTOs;
+    namespace Modules\Sales\App\DTOs;
 
-use Ramsey\Uuid\Guid\Guid;
 
 class SalesDTO{
 
