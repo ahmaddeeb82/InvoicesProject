@@ -24,9 +24,8 @@ class InvoiceDTO
         $this->GUID = $GUID;
     }
 
-    public function __construct3(int $pagination, string $GUID, string $search)
+    public function __construct3(string $GUID, string $search, string $forCons)
     {
-        $this->pagination = $pagination;
         $this->GUID = $GUID;
         $this->search = $search;
     }

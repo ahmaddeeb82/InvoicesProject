@@ -5,7 +5,7 @@ namespace Modules\Invoice\App\resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Number;
 
-class InvoiceResource extends JsonResource
+class InvoiceSearchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,6 @@ class InvoiceResource extends JsonResource
             'Spelled Total' => Number::spell($this->Total, locale:'ar'),
             'Date' => $this->Date,
             'Branch' => $this->Branch,
-            'Row Number' => $this->RowNumber,
         ];
     }
 }

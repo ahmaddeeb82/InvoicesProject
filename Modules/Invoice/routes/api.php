@@ -23,5 +23,6 @@ Route::middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration'])
 ->prefix('invoices')
 ->group(function() {
     Route::get('list',  'list');
+    Route::get('search', 'search');
 });
 

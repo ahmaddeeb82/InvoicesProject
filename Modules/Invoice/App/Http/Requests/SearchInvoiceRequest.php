@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator; 
 use App\Exceptions\MyValidationException;
 
-class GetInvoiceRequest extends FormRequest
+class SearchInvoiceRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -25,7 +25,7 @@ class GetInvoiceRequest extends FormRequest
     {
         return [
             'GUID' => 'required||exists:sqlsrv_second.bu000,GUID',
-            'search' => 'required|integer'
+            'page' => 'required|integer',
         ];
     }
 

@@ -51,4 +51,13 @@ class InvoiceController extends Controller
         );
         return (new InvoiceService(new InvoiceRepository($dto)))->list();
     }
+
+    public function search(Request $request) {
+        $dto = new InvoiceDTO(
+            $request->GUID,
+            $request->search,
+            1
+        );
+        return (new InvoiceService(new InvoiceRepository($dto)))->search();
+    }
 }
