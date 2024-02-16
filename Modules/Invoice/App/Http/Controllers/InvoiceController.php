@@ -7,8 +7,10 @@ use Dompdf\Adapter\PDFLib;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Invoice\app\DTOs\InvoiceDTO;
 use Modules\Invoice\App\Models\Invoice;
-
+use Modules\Invoice\app\Repositories\InvoiceRepository;
+use Modules\Invoice\app\Services\InvoiceService;
 
 class InvoiceController extends Controller
 {
@@ -42,48 +44,11 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        return view('invoice::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('invoice::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('invoice::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+    public function list(Request $request) {
+        $dto = new InvoiceDTO(
+            $request->page,
+            $request->GUID,
+        );
+        return (new InvoiceService(new InvoiceRepository($dto)))->list();
     }
 }
