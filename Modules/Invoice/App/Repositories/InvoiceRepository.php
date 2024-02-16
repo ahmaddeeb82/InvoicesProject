@@ -31,7 +31,7 @@ class InvoiceRepository
     }
 
     public function GetAllInvoices() {
-    return DB::select("SELECT *
+    return DB::connection('sqlsrv_second')->select("SELECT *
         FROM (
             SELECT [bu000].[Number],[bu000].[Date],[bu000].[Total],[bu000].[Branch]
             ,[bu000].[GUID],[bu000].[TypeGUID], [bt000].[BillType],
@@ -50,7 +50,7 @@ class InvoiceRepository
     }
 
     public function getInvoicesCount() {
-        return DB::select("SELECT COUNT(*) AS FilteredCount
+        return DB::connection('sqlsrv_second')->select("SELECT COUNT(*) AS FilteredCount
         FROM [bu000]
           INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
           WHERE [BillType] = 1
@@ -58,7 +58,7 @@ class InvoiceRepository
     }
 
     public function searchInvoices() {
-        return DB::select("SELECT * FROM (SELECT [bu000].*, [bt000].[BillType]
+        return DB::connection('sqlsrv_second')->select("SELECT * FROM (SELECT [bu000].*, [bt000].[BillType]
         From [bu000]
           INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
           WHERE [BillType] = 1

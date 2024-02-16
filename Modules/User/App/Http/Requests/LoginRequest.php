@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         $request_rules = [
-            'username' => 'required|exists:sqlsrv_second.users,username',
+            'username' => 'required|exists:sqlsrv.users,username',
             'password' => 'required',
         ];
         return $request_rules;

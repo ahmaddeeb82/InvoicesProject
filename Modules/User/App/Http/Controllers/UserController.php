@@ -104,7 +104,7 @@ class UserController extends Controller
         );
     }
 
-    public function logout(GetUserRequest $request) {
+    public function logout() {
 
 
         (new UserService(new UserRepository()))->deleteToken();

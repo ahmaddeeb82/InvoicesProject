@@ -16,7 +16,7 @@ class Sales extends Model
      */
     protected $fillable = [];
 
-    protected $connection = 'sqlsrv';
+    protected $connection = 'sqlsrv_second';
 
 
     protected $table = 'br000';

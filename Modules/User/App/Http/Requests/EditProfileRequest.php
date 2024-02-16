@@ -22,9 +22,9 @@ class EditProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'integer|exists:sqlsrv_second.users,id',
+            'id' => 'integer|exists:sqlsrv.users,id',
             'name' => 'required',
-            'username' => 'required|unique:sqlsrv_second.users,username,'.$this->id.'|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
+            'username' => 'required|unique:sqlsrv.users,username,'.$this->id.'|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
             'permissions' => 'present|array',
             'permissions.*' => 'string|in:export-pdf,export-excel',
             'password' => 'required|min:6',

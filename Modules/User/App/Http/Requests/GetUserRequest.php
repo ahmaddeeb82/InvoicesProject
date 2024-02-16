@@ -21,7 +21,7 @@ class GetUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:sqlsrv_second.users,id'
+            'id' => 'required|integer|exists:sqlsrv.users,id'
         ];
     }
 

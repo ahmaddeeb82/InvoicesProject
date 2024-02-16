@@ -24,7 +24,7 @@ class GetInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'GUID' => 'required||exists:sqlsrv.bu000,GUID',
+            'GUID' => 'required||exists:sqlsrv_second.bu000,GUID',
             'page' => 'required|integer',
             'search' => 'integer'
         ];
