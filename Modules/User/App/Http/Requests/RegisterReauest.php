@@ -23,7 +23,7 @@ class RegisterReauest extends FormRequest
     {
         return [
             'name' => 'required',
-            'username' => 'required|unique:users|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
+            'username' => 'required|unique:sqlsrv_second.users|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
             'permissions' => 'present|array',
             'permissions.*' => 'string|in:export-pdf,export-excel',
             'password' => 'required|min:6',

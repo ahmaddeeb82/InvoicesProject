@@ -1,13 +1,16 @@
 <?php
 
-namespace Modules\User\app\Http\Requests;
+namespace Modules\Invoice\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator; 
 use App\Exceptions\MyValidationException;
 
-class GetUserRequest extends FormRequest
+class GetInvoiceRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     */
     protected $stopOnFirstFailure = true;
 
 
@@ -21,7 +24,9 @@ class GetUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:sqlsrv_second.users,id'
+            'GUID' => 'required||exists:sqlsrv.bu000,GUID',
+            'page' => 'required|integer',
+            'search' => 'integer'
         ];
     }
 
