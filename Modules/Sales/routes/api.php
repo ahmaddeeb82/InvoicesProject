@@ -19,7 +19,7 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 //     Route::get('sales', fn (Request $request) => $request->user())->name('sales');
 // });
 
-Route::prefix('branches-Sales')
+Route::prefix('branches-Sales')->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
 ->controller(SalesController::class)
 ->group(function () {
 

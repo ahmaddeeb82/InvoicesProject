@@ -7,6 +7,8 @@ use Modules\Sales\App\Models\Sales;
 use Modules\Sales\App\DTOs\SalesDTO;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Helpers\JsonDatabases;
+
 
 
 class SalesRepository{
@@ -15,7 +17,7 @@ class SalesRepository{
 
     public function getAll()
     {
-        $branches = Sales::where('Code', '>', 2)->get(['Name','Number', 'GUID']);
+        $branches = Sales::on(JsonDatabases::$connection_name)->where('Code', '>', 2)->get(['Name','Number', 'GUID']);
 
         $salesDTO  = [];
         foreach($branches as $branch)
@@ -32,7 +34,7 @@ class SalesRepository{
 
     public function getBranchSales($salesDTO)
     {
-           $totals = DB::connection('sqlsrv_second')->table('bu000')
+           $totals = DB::connection(JsonDatabases::$connection_name)->table('bu000')
             ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
             ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')
             ->where('bu000.Branch' ,$salesDTO->GUID)->sum('Total');
@@ -43,7 +45,7 @@ class SalesRepository{
 
     public function getBranchSalesBetweenMonths($salesDTO , $startDate , $endDate)
     {
-           $totals = DB::connection('sqlsrv_second')->table('bu000')
+           $totals = DB::connection(JsonDatabases::$connection_name)->table('bu000')
             ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
             ->select('bu000.*' , 'bt000.BillType')
             ->where('BillType' , '1')
@@ -57,7 +59,7 @@ class SalesRepository{
 
     public function getById($id)
     {
-     $branch = Sales::where('GUID' , $id)->get(['Name', 'Number', 'GUID'])->first();
+     $branch = Sales::on(JsonDatabases::$connection_name)->where('GUID' , $id)->get(['Name', 'Number', 'GUID'])->first();
 
      $salesDTO = new SalesDTO($branch->Name,
                               $branch->Number,
@@ -66,7 +68,7 @@ class SalesRepository{
     }
 
     public function getTotalSalesValue(){
-        $totalInvoicesValue = DB::connection('sqlsrv_second')->table('bu000')
+        $totalInvoicesValue = DB::connection(JsonDatabases::$connection_name)->table('bu000')
         ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
         ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')->sum('Total');
 
@@ -75,7 +77,7 @@ class SalesRepository{
 
     public function getTotalSalesValueAtMonth($current_time)
     {
-        $totalInvoicesValue = DB::connection('sqlsrv_second')->table('bu000')
+        $totalInvoicesValue = DB::connection(JsonDatabases::$connection_name)->table('bu000')
         ->join('bt000', 'bu000.TypeGUID', '=', 'bt000.GUID')
         ->select('bu000.*', 'bt000.BillType')
         ->where('BillType', '1')
@@ -87,7 +89,7 @@ class SalesRepository{
 
     public function getTotalSalesValueAtBetweenMonths($startDate , $endDate)
     {
-        $totalInvoicesValue = DB::connection('sqlsrv_second')->table('bu000')
+        $totalInvoicesValue = DB::connection(JsonDatabases::$connection_name)->table('bu000')
         ->join('bt000', 'bu000.TypeGUID', '=', 'bt000.GUID')
         ->select('bu000.*', 'bt000.BillType')
         ->where('BillType', '1')
@@ -102,7 +104,7 @@ class SalesRepository{
         $data = $searchDTO;
         $Name_column = 'Name';
 
-        $NameResult = Sales::where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Number' , 'GUID']);
+        $NameResult = Sales::on(JsonDatabases::$connection_name)->where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Number' , 'GUID']);
 
         if($NameResult != null){
 
@@ -120,7 +122,7 @@ class SalesRepository{
                 $salesDTO[$result->GUID]->branchNumber = $result->Number;
                 $salesDTO[$result->GUID]->branchGUID = $result->GUID;
 
-                $salesDTO[$result->GUID]->totalInvoices =  DB::connection('sqlsrv_second')->table('bu000')
+                $salesDTO[$result->GUID]->totalInvoices =  DB::connection(JsonDatabases::$connection_name)->table('bu000')
                 ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
                 ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')
                 ->where('bu000.Branch' ,$result->GUID)->sum('Total');
