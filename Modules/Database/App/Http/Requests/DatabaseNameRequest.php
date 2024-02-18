@@ -1,13 +1,12 @@
 <?php
 
-namespace Modules\Invoice\App\Http\Requests;
+namespace Modules\Database\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator; 
 use App\Exceptions\MyValidationException;
-use App\Helpers\JsonDatabases;
 
-class GetInvoiceRequest extends FormRequest
+class DatabaseNameRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -25,8 +24,7 @@ class GetInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'GUID' => 'required||exists:'.JsonDatabases::$connection_name.'.bu000,GUID',
-            'search' => 'required|integer'
+            'name' => 'required'
         ];
     }
 

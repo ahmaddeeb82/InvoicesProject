@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Database\App\Http\Controllers\DatabaseController;
 
 /*
     |--------------------------------------------------------------------------
@@ -15,15 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    // Route::get('invoice', fn (Request $request) => $request->user())->name('invoice');
+    Route::get('database', fn (Request $request) => $request->user())->name('database');
 });
 
-Route::middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
-->controller(Modules\Invoice\app\Http\Controllers\InvoiceController::class)
-->prefix('invoices')
+Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration', 'connection'])
+->controller(Modules\Database\app\Http\Controllers\DatabaseController::class)
+->prefix('databases')
 ->group(function() {
-    Route::get('list',  'list');
-    Route::get('search', 'search');
-    Route::get('export', 'export');
+    Route::get('list','list');
+    Route::post('set-admin',  'setAdmin');
+    Route::post('set-users',  'setUsers');
+    Route::get('get-users',  'getUsers');
+    Route::get('get-admin',  'getAdmin');
 });
-

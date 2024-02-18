@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use App\Exceptions\MyValidationException;
 use App\Helpers\JsonDatabases;
 
-class GetInvoiceRequest extends FormRequest
+class GetInvoiceExportRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -26,7 +26,8 @@ class GetInvoiceRequest extends FormRequest
     {
         return [
             'GUID' => 'required||exists:'.JsonDatabases::$connection_name.'.bu000,GUID',
-            'search' => 'required|integer'
+            'first_date' => 'required|date_format:Y-m-d',
+            'last_date' => 'required|date_format:Y-m-d'
         ];
     }
 

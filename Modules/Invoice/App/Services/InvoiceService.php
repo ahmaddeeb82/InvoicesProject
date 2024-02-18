@@ -6,6 +6,8 @@ use App\Helpers\ApiResponse;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Modules\Invoice\app\Repositories\InvoiceRepository;
+use Modules\Invoice\App\resources\InvoiceResource;
+use Modules\Invoice\App\resources\InvoiceSearchResource;
 use Modules\User\app\DTOs\UserDTO;
 use Modules\User\App\resources\AllUserResource;
 use Modules\User\app\Resources\AuthResource;
@@ -53,7 +55,18 @@ class InvoiceService {
         return ApiResponse::apiSendResponse(
             200,
             __('messages.retrieved'),
-            ['invoices' => $invoices, 'pagination' => $pagination_info]
+            ['invoices' => InvoiceResource::collection($invoices), 'pagination' => $pagination_info]
+        );
+    }
+
+    public function search() {
+
+        $invoices = $this->repository->searchInvoices();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            ['invoices' => InvoiceSearchResource::collection($invoices)]
         );
     }
 }
