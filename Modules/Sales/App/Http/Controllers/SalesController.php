@@ -7,11 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Invoice\App\Models\Invoice;
 use Modules\Sales\App\Http\Requests\GetBranchSaleRequest;
 use Modules\Sales\App\Models\Sales;
 use Modules\Sales\App\Services\SalesService;
 use Modules\Sales\App\DTOs\SalesDTO;
+use Modules\Sales\App\Exports\SalesExport;
+
 class SalesController extends Controller
 {
 //    public SalesService $salesService;
@@ -109,14 +112,14 @@ class SalesController extends Controller
     {
         $startDate = $request->start_date;
         $endDate = $request-> end_date;
-        $data =  [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
-                 (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
-    ];
-        return ApiResponse::apiSendResponse(
-            200,
-            __('messages.retrieved'),
-            $data
-        );
+
+        $sales_export = new SalesExport;
+        $sales_export->sales = [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
+        (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
+        ];
+
+        return Excel::download($sales_export, 'sales_'.now()->format('Y-m-d').'.xlsx');
+
     }
 
 

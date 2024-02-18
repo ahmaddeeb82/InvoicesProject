@@ -47,6 +47,6 @@ class InvoiceController extends Controller
         $invoice_export = new InvoicesExport;
         $invoice_export->invoices = (new InvoiceRepository($dto))->GetAllExportInvoices();
         
-    return Excel::download($invoice_export, 'invoices.xlsx');
+    return Excel::download($invoice_export, 'invoices_'.now()->format('Y-m-d').'.xlsx');
     }
 }
