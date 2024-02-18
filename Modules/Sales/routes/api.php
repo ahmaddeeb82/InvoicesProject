@@ -19,7 +19,7 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 //     Route::get('sales', fn (Request $request) => $request->user())->name('sales');
 // });
 
-Route::prefix('bracnhes-Sales')
+Route::prefix('branches-Sales')
 ->controller(SalesController::class)
 ->group(function () {
 
@@ -27,12 +27,16 @@ Route::prefix('bracnhes-Sales')
 
     Route::get('getBranch' ,   "show");
 
-    Route::get('getSortedBranches' , "GetGreatestBranchSales");
+    Route::get('getSortedBranches' , "SortByBranchSales");
 
     Route::get('getSalesValue' , "GetBranchsSales");
 
     Route::get('GetSalesMonthly',  "GetSalesValueForMonth");
     Route::get('Search-For' , "searchForBranch");
+
+    Route::get('getSalesBetween' , "GetSalesValueBetweenMonths");
+
+    Route::get('ExcelForm' , "GetBranchesSalesBetweenMonths");
 });
 
 // Route::get('branch ' , [SalesController::class , "index"]);

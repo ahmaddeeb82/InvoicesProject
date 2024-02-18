@@ -20,7 +20,11 @@ class GetBranchSaleRequest extends FormRequest{
     public function rules(): array
     {
         return [
-            'id' => 'required|guid_format|exists:sqlsrv_second.br000,GUID|unique_guid:4930B23A-B1E9-42F7-B4BD-80B28C371009|unique_guid:71D497C7-3817-449D-A914-E49F87383ECB'
+            'id' => 'required|
+            guid_format|
+            exists:sqlsrv_second.br000,GUID|
+            unique_guid:4930B23A-B1E9-42F7-B4BD-80B28C371009|
+            unique_guid:71D497C7-3817-449D-A914-E49F87383ECB'
         ];
     }
 

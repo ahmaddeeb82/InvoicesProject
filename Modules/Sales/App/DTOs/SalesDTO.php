@@ -5,7 +5,7 @@
 class SalesDTO{
 
     public $branchName;
-    public $branchCode;
+    public $branchNumber;
     public $branchGUID;
     public $totalInvoices;
 
@@ -32,18 +32,18 @@ class SalesDTO{
         $this->searchParameter = $parameter;
     }
 
-    public function __construct3($branchName , $branchCode , $branchGUID)
+    public function __construct3($branchName , $branchNumber , $branchGUID)
     {
         $this->branchName = $branchName;
         $this->branchGUID = $branchGUID;
-        $this->branchCode = $branchCode;
+        $this->branchNumber = $branchNumber;
     }
 
-    public function __construct4($branchName , $branchCode , $branchGUID , $totalInvoices)
+    public function __construct4($branchName , $branchNumber , $branchGUID , $totalInvoices)
     {
         $this->branchName = $branchName;
         $this->branchGUID = $branchGUID;
-        $this->branchCode = $branchCode;
+        $this->branchNumber = $branchNumber;
         $this->totalInvoices= $totalInvoices;
     }
 

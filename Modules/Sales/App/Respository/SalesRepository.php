@@ -15,14 +15,14 @@ class SalesRepository{
 
     public function getAll()
     {
-        $branches = Sales::where('Code', '>', 2)->get(['Name','Number' , 'Code', 'GUID']);
+        $branches = Sales::where('Code', '>', 2)->get(['Name','Number', 'GUID']);
 
         $salesDTO  = [];
         foreach($branches as $branch)
         {
             $salesDTO[]= [
                 'branch' => $branch->Name,
-                'code' => $branch->Code,
+                'number' => $branch->Number,
                 'GUID' => $branch->GUID,
             ];
         }
@@ -41,12 +41,26 @@ class SalesRepository{
          return $totals;
     }
 
+    public function getBranchSalesBetweenMonths($salesDTO , $startDate , $endDate)
+    {
+           $totals = DB::connection('sqlsrv_second')->table('bu000')
+            ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
+            ->select('bu000.*' , 'bt000.BillType')
+            ->where('BillType' , '1')
+            ->where('bu000.Branch' ,$salesDTO->GUID)
+            ->whereBetween('Date' , [$startDate , $endDate])
+            ->sum('Total');
+
+            // dd($totals);
+         return $totals;
+    }
+
     public function getById($id)
     {
-     $branch = Sales::where('GUID' , $id)->get(['Name', 'Code', 'GUID'])->first();
+     $branch = Sales::where('GUID' , $id)->get(['Name', 'Number', 'GUID'])->first();
 
      $salesDTO = new SalesDTO($branch->Name,
-                              $branch->Code,
+                              $branch->Number,
                               $branch->GUID);
         return $branch;
     }
@@ -71,13 +85,13 @@ class SalesRepository{
         return $totalInvoicesValue;
     }
 
-    public function getTotalSalesValueAtBetweenMonths($current_time , $endDate)
+    public function getTotalSalesValueAtBetweenMonths($startDate , $endDate)
     {
         $totalInvoicesValue = DB::connection('sqlsrv_second')->table('bu000')
         ->join('bt000', 'bu000.TypeGUID', '=', 'bt000.GUID')
         ->select('bu000.*', 'bt000.BillType')
         ->where('BillType', '1')
-        ->whereDate('bu000.Date', $current_time)
+        ->whereBetween('bu000.Date' ,[$startDate , $endDate] )
         ->sum('Total');
 
         return $totalInvoicesValue;
@@ -88,7 +102,7 @@ class SalesRepository{
         $data = $searchDTO;
         $Name_column = 'Name';
 
-        $NameResult = Sales::where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Code' , 'GUID']);
+        $NameResult = Sales::where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Number' , 'GUID']);
 
         if($NameResult != null){
 
@@ -103,16 +117,8 @@ class SalesRepository{
 
             foreach($NameResult as $result){
                 $salesDTO[$result->GUID]->branchName = $result->Name;
-                $salesDTO[$result->GUID]->branchCode = $result->Code;
+                $salesDTO[$result->GUID]->branchNumber = $result->Number;
                 $salesDTO[$result->GUID]->branchGUID = $result->GUID;
-
-                // new SalesDTO(
-                //     $result->get('Name'),
-                //     $result->get('Code'),
-                //     $result->get('GUID')
-                // );
-                // dd($result->GUID);
-                // dd($salesDTO[$result->GUID]);
 
                 $salesDTO[$result->GUID]->totalInvoices =  DB::connection('sqlsrv_second')->table('bu000')
                 ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
@@ -126,48 +132,23 @@ class SalesRepository{
             foreach($salesDTO as $result){
                 $salesResult []= [
                     'name' => $result->branchName,
-                    'code' => $result->branchCode,
+                    'number' => $result->branchNumber,
                     'GUID' => $result->branchGUID,
                     'total sales' => $result->totalInvoices
                 ];
             }
-
-
-    //     $resultSalesDTO = new SalesDTO(
-    //         $NameResult->get('Name'),
-    //         $NameResult->get('Code'),
-    //         $NameResult->get('GUID'),
-    //         $this->getBranchSales($salesDTO)
-    //     );
     }
         return $salesResult;
 
     }
 
-    public function searchByCode($searchDTO)
+    public function searchByNumber($searchDTO)
     {
         $data = $searchDTO;
-        $Name_column = 'Code';
+        $Name_column = 'Number';
 
-        $CodeResult = Sales::where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Code' , 'GUID']);
+        $NumberResult = Sales::where($Name_column , $data)->orWhere($Name_column , 'LIKE' , '%' . $data . '%')->get(['Name' , 'Number' , 'GUID']);
 
-    //     if($CodeResult != null){
-    //         // dd($CodeResult);
-    //     $salesDTO = new SalesDTO(
-    //         $CodeResult->get('Name'),
-    //         $CodeResult->get('Code'),
-    //         $CodeResult->get('GUID')
-    //     );
-
-    //     dd(   $CodeResult->get('Name'));
-
-    //     $resultSalesDTO = new SalesDTO(
-    //         $CodeResult->get('Name'),
-    //         $CodeResult->get('Code'),
-    //         $CodeResult->get('GUID'),
-    //         $this->getBranchSales($salesDTO)
-    //     );
-    // }
-        return $CodeResult;
+        return $NumberResult;
     }
 }

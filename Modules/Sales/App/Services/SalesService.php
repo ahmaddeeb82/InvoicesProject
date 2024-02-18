@@ -35,7 +35,7 @@ use Number;
             if (isset($totals[$branch->GUID])) {
                 $salesDTO[] = [
                     'branch' => $branch->Name,
-                    'code' => $branch->Code,
+                    'number' => $branch->Number,
                     'GUID' => $branch->GUID,
                     'spelled_total' => Number::spell($totals[$branch->GUID] , after:1000 , locale:'ar'),
                     'total_Sales' => $totals[$branch->GUID]
@@ -56,7 +56,7 @@ use Number;
 
         $salesDTO = [
             'branch' => $branch->Name,
-            'code' => $branch->Code,
+            'number' => $branch->Number,
             'GUID' => $branch->GUID,
             'spelled_total' => Number::spell($branch_sales , after:1000 , locale:'ar'),
             'total_Sales' => $branch_sales
@@ -72,6 +72,36 @@ use Number;
             return $b['total_Sales'] - $a['total_Sales']; // Sort in descending order
         });
         return $sales;
+    }
+
+
+    public function GetBranchesSalesBetweenMonths($startDate , $endDate){
+        $branches =(new SalesRepository())->getAll();
+        $totals = [];
+
+        foreach ($branches as $branch) {
+            $totals[$branch->GUID] = (new SalesRepository())->getBranchSalesBetweenMonths($branch,$startDate,$endDate);
+        }
+
+        $spelledNumber = Number::spell(55000, after:5000);
+
+        $salesDTO = [];
+        foreach ($branches as $branch) {
+            if (isset($totals[$branch->GUID])) {
+                $salesDTO[] = [
+                    'branch' => $branch->Name,
+                    'number' => $branch->Number,
+                    'GUID' => $branch->GUID,
+                    'spelled_total' => Number::spell($totals[$branch->GUID] , after:1000 , locale:'ar'),
+                    'total_Sales' => $totals[$branch->GUID]
+                ];
+            }
+        }
+
+        usort($salesDTO, function($a, $b) {
+            return $b['total_Sales'] - $a['total_Sales']; // Sort in descending order
+        });
+        return $salesDTO;
     }
 
     public function GetAllSalesValue(){
@@ -126,26 +156,22 @@ use Number;
 
    public function SearchForBranch($searchDTO)
     {
-        // $data = $searchDTO;
-        // $Name_column = 'Name';
 
         $NameResult = (new SalesRepository())->searchByName($searchDTO);
 
-        // $Code_column = 'Code';
-        $CodeResult =  (new SalesRepository())->searchByCode($searchDTO);
+        $NumberResult =  (new SalesRepository())->searchByNumber($searchDTO);
 
         $result = [];
 
         if($NameResult != null){
             $result[]= [$NameResult];
         }
-        if($CodeResult != null){
-            $result[]=[$CodeResult];
+        if($NumberResult != null){
+            $result[]=[$NumberResult];
         }
 
         return $result;
 
-        // $result = $this->
     }
 
 }

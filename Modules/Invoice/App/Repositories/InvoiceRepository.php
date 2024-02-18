@@ -86,5 +86,5 @@ class InvoiceRepository
                 'branch' => $this->dtoArray['GUID']
             ]);
         }
-    
+
 }

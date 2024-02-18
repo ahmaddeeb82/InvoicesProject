@@ -54,7 +54,7 @@ class SalesController extends Controller
        );
     }
 
-    public function GetGreatestBranchSales(){
+    public function SortByBranchSales(){
         $result =  (new SalesService)->GetGreatestBranchSales();
 
         return ApiResponse::apiSendResponse(
@@ -91,6 +91,32 @@ class SalesController extends Controller
             (new SalesService)->SearchForBranch($data)
         );
 
+    }
+
+
+    public function GetSalesValueBetweenMonths(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request-> end_date;
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
+        );
+    }
+
+    public function GetBranchesSalesBetweenMonths(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request-> end_date;
+        $data =  [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
+                 (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
+    ];
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            $data
+        );
     }
 
 
