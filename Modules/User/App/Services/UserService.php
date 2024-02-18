@@ -70,7 +70,7 @@ class UserService {
     public function listUsers() {
         $users = $this->repository->getAllUSers();
 
-        return AllUserResource::collection($users);
+        return ['Users Count' => count($users), 'Users' => AllUserResource::collection($users)];
     }
     
     public function getUSerById() {

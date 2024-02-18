@@ -2,6 +2,7 @@
 
 namespace Modules\Invoice\app\Repositories;
 
+use App\Helpers\JsonDatabases;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +32,7 @@ class InvoiceRepository
     }
 
     public function GetAllInvoices() {
-    return DB::connection('sqlsrv_second')->select("SELECT *
+    return DB::connection(JsonDatabases::$connection_name)->select("SELECT *
         FROM (
             SELECT [bu000].[Number],[bu000].[Date],[bu000].[Total],[bu000].[Branch]
             ,[bu000].[GUID],[bu000].[TypeGUID], [bt000].[BillType],
@@ -50,7 +51,7 @@ class InvoiceRepository
     }
 
     public function getInvoicesCount() {
-        return DB::connection('sqlsrv_second')->select("SELECT COUNT(*) AS FilteredCount
+        return DB::connection(JsonDatabases::$connection_name)->select("SELECT COUNT(*) AS FilteredCount
         FROM [bu000]
           INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
           WHERE [BillType] = 1
@@ -58,7 +59,7 @@ class InvoiceRepository
     }
 
     public function searchInvoices() {
-        return DB::connection('sqlsrv_second')->select("SELECT * FROM (SELECT [bu000].*, [bt000].[BillType]
+        return DB::connection(JsonDatabases::$connection_name)->select("SELECT * FROM (SELECT [bu000].*, [bt000].[BillType]
         From [bu000]
           INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
           WHERE [BillType] = 1
@@ -66,5 +67,24 @@ class InvoiceRepository
           ) AS Ahmad WHERE [Number] like :q Order By [Date]"
           ,['branch' => $this->dtoArray['GUID'], 'q'=> '%'.$this->dtoArray['search'].'%']);
     }
+
+    public function GetAllExportInvoices() {
+        return DB::connection(JsonDatabases::$connection_name)->select("SELECT *
+            FROM (
+                SELECT [bu000].[Number],[bu000].[Date],[bu000].[Total],[bu000].[Branch]
+                ,[bu000].[GUID],[bu000].[TypeGUID], [bt000].[BillType],
+                     ROW_NUMBER() OVER (ORDER BY ([Date])) AS RowNumber
+              FROM [bu000]
+              INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
+              WHERE [BillType] = 1
+              AND [Branch] = :branch
+            ) AS PaginatedData
+            WHERE Date BETWEEN :first_date AND :last_date",
+            [
+                'first_date' => $this->dtoArray['first_date'].' 00:00:00',
+                'last_date' => $this->dtoArray['last_date']. ' 23:59:59',
+                'branch' => $this->dtoArray['GUID']
+            ]);
+        }
     
 }

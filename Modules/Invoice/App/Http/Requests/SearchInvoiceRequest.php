@@ -5,6 +5,7 @@ namespace Modules\Invoice\App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator; 
 use App\Exceptions\MyValidationException;
+use App\Helpers\JsonDatabases;
 
 class SearchInvoiceRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class SearchInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'GUID' => 'required||exists:sqlsrv_second.bu000,GUID',
+            'GUID' => 'required||exists:'.JsonDatabases::$connection_name.'.bu000,GUID',
             'page' => 'required|integer',
         ];
     }

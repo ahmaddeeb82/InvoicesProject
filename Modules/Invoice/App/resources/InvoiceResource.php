@@ -16,10 +16,10 @@ class InvoiceResource extends JsonResource
             'GUID' => $this->GUID,
             'Number' => $this->Number,
             'Total' => $this->Total,
-            'Spelled Total' => Number::spell($this->Total, locale:'ar'),
+            'spelled_total' => Number::spell($this->Total, locale:'ar'),
             'Date' => $this->Date,
             'Branch' => $this->Branch,
-            'Row Number' => $this->RowNumber,
+            'RowNumber' => $this->RowNumber,
         ];
     }
 }
