@@ -11,6 +11,7 @@ use Modules\Sales\App\DTOs\SalesDTO;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Modules\Sales\App\Respository\SalesRepository;
+use Number;
 
 
  class SalesService{
@@ -20,44 +21,15 @@ use Modules\Sales\App\Respository\SalesRepository;
 
     public function GetAllBranchesSales()
     {
-        // $Invoices = Invoice::where('PayType', '1')->get(['Branch', 'Date', 'GUID', 'Total']);
-        // $InvoiceType = DB::connection('sqlsrv')->table('bu000')
-        // ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
-        // ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')->get();
-
-        // $branches = Sales::where('Code', '>', 2)->get(['Name','Number' , 'Code', 'GUID']);
-
-        // $totals = [];
-
-        // foreach ($branches as $branch) {
-        //     $totals[$branch->GUID] = DB::connection('sqlsrv')->table('bu000')
-        //     ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
-        //     ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')
-        //     ->where('bu000.Branch' ,$branch->GUID)->sum('Total');
-        // }
-
-        // foreach ($InvoiceType as $Invoice) {
-        //     $totals[$Invoice->Branch] += $Invoice->Total;
-        // }
-
-        // $salesDTO = [];
-
-        // foreach ($branches as $branch) {
-        //     if (isset($totals[$branch->GUID])) {
-        //         $salesDTO[] = [
-        //             'branch' => $branch->Name,
-        //             'code' => $branch->Code,
-        //             'GUID' => $branch->GUID,
-        //             'total_Sales' => $totals[$branch->GUID]
-        //         ];
-        //     }
-        // }
         $branches =(new SalesRepository())->getAll();
         $totals = [];
 
         foreach ($branches as $branch) {
             $totals[$branch->GUID] = (new SalesRepository())->getBranchSales($branch);
         }
+
+        $spelledNumber = Number::spell(55000, after:5000);
+
         $salesDTO = [];
         foreach ($branches as $branch) {
             if (isset($totals[$branch->GUID])) {
@@ -65,6 +37,7 @@ use Modules\Sales\App\Respository\SalesRepository;
                     'branch' => $branch->Name,
                     'code' => $branch->Code,
                     'GUID' => $branch->GUID,
+                    'spelled_total' => Number::spell($totals[$branch->GUID] , after:1000 , locale:'ar'),
                     'total_Sales' => $totals[$branch->GUID]
                 ];
             }
@@ -76,31 +49,6 @@ use Modules\Sales\App\Respository\SalesRepository;
     public function GetById(SalesDTO $salesDTO)
     {
         $id = $salesDTO->branchGUID;
-        // $Invoices = Invoice::where('PayType', '1')->get(['Branch', 'Date', 'GUID', 'Total']);
-
-        // $InvoiceType = DB::connection('sqlsrv')->table('bu000')
-        // ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
-        // ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')->get();
-
-        // $branch = Sales::where('GUID' , $id)->get(['Name', 'Code', 'GUID'])->first();
-        // // $totals  = 0;
-        // // foreach($InvoiceType as $Invoice){
-        // //     if($Invoice ->Branch == $id){
-        // //         $totals+= $Invoice->Total;
-        // //     }
-        // // }
-
-        // $totals =  DB::connection('sqlsrv')->table('bu000')
-        // ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
-        // ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')
-        // ->where('bu000.Branch' ,$branch->GUID)->sum('Total');
-
-        // $result[] = [
-        //     'branch' => $branch->Name,
-        //     'code' => $branch->Code,
-        //     'GUID' => $branch->GUID,
-        //     'total_Sales' => $totals
-        // ];
 
         $branch = (new SalesRepository())->getById($id);
 
@@ -110,6 +58,7 @@ use Modules\Sales\App\Respository\SalesRepository;
             'branch' => $branch->Name,
             'code' => $branch->Code,
             'GUID' => $branch->GUID,
+            'spelled_total' => Number::spell($branch_sales , after:1000 , locale:'ar'),
             'total_Sales' => $branch_sales
         ];
 
@@ -126,11 +75,14 @@ use Modules\Sales\App\Respository\SalesRepository;
     }
 
     public function GetAllSalesValue(){
-        // $InvoiceType = DB::connection('sqlsrv')->table('bu000')
-        // ->join('bt000' ,'bu000.TypeGUID' , '=' , 'bt000.GUID')
-        // ->select('bu000.*' , 'bt000.BillType')->where('BillType' , '1')->sum('Total');
-        // return $InvoiceType;
-        return (new SalesRepository())->getTotalSalesValue();
+
+        $value =   (new SalesRepository())->getTotalSalesValue();
+
+            $data[] =[
+            'spelled_total' => Number::spell($value , after:1000 , locale:'ar'),
+            'total'=>  $value
+            ];
+        return $data;
     }
 
     public function GetSalesValueForMonth($date){
@@ -141,7 +93,35 @@ use Modules\Sales\App\Respository\SalesRepository;
         else{
             $selected_month = Carbon::parse($date);
         }
-        return (new SalesRepository())->getTotalSalesValueAtMonth($selected_month);
+
+        $value = (new SalesRepository())->getTotalSalesValueAtMonth($selected_month);
+        $data[] =[
+            'spelled_total' => Number::spell($value , after:1000 , locale:'ar'),
+              'total'=>   $value
+            ];
+        return $data;
+    }
+
+    public function GetBranchSalesValueBetweenMonths($startDate , $endDate){
+
+        // if($startDate == null && $endDate == null)
+        // {
+        //     $selected_month = Carbon::now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
+        // }
+        // else{
+        //     $selected_month = Carbon::parse($date);
+        // }
+
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+
+
+        $value = (new SalesRepository())->getTotalSalesValueAtBetweenMonths($start , $end);
+        $data[] =[
+            'spelled_total' => Number::spell($value , after:1000 , locale:'ar'),
+              'total'=>   $value
+            ];
+        return $data;
     }
 
    public function SearchForBranch($searchDTO)
@@ -162,8 +142,6 @@ use Modules\Sales\App\Respository\SalesRepository;
         if($CodeResult != null){
             $result[]=[$CodeResult];
         }
-        // dd($result);
-
 
         return $result;
 
