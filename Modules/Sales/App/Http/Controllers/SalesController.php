@@ -27,21 +27,6 @@ class SalesController extends Controller
             __('messages.retrieved'),
             (new SalesService)-> GetAllBranchesSales()
         );
-
-    //    $paginationInfo = [
-    //     'current_page' => $data->currentPage(),
-    //     'total' => $data->total(),
-    //     'per_page' => $data->perPage(),
-    //     'last_page' => $data->lastPage(),
-    //     'next_page_url' => $data->nextPageUrl(),
-    //     'prev_page_url' => $data->previousPageUrl(),
-    // ];
-
-    // return response()->json([
-    //     'data' => $data->items(),
-    //     'pagination' => $paginationInfo
-    // ]);
-    // return response()->json($result);
     }
 
     public function show(GetBranchSaleRequest $request)

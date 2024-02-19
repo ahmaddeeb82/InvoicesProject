@@ -16,8 +16,7 @@ use Number;
 
  class SalesService{
 
-    public function __construct(){
-    }
+    public function __construct(){}
 
     public function GetAllBranchesSales()
     {
@@ -27,8 +26,6 @@ use Number;
         foreach ($branches as $branch) {
             $totals[$branch->GUID] = (new SalesRepository())->getBranchSales($branch);
         }
-
-        $spelledNumber = Number::spell(55000, after:5000);
 
         $salesDTO = [];
         foreach ($branches as $branch) {
@@ -73,8 +70,6 @@ use Number;
         });
         return $sales;
     }
-
-
     public function GetBranchesSalesBetweenMonths($startDate , $endDate){
         $branches =(new SalesRepository())->getAll();
         $totals = [];
@@ -82,8 +77,6 @@ use Number;
         foreach ($branches as $branch) {
             $totals[$branch->GUID] = (new SalesRepository())->getBranchSalesBetweenMonths($branch,$startDate,$endDate);
         }
-
-        $spelledNumber = Number::spell(55000, after:5000);
 
         $salesDTO = [];
         foreach ($branches as $branch) {
@@ -133,15 +126,6 @@ use Number;
     }
 
     public function GetBranchSalesValueBetweenMonths($startDate , $endDate){
-
-        // if($startDate == null && $endDate == null)
-        // {
-        //     $selected_month = Carbon::now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
-        // }
-        // else{
-        //     $selected_month = Carbon::parse($date);
-        // }
-
         $start = Carbon::parse($startDate);
         $end = Carbon::parse($endDate);
 
@@ -156,22 +140,22 @@ use Number;
 
    public function SearchForBranch($searchDTO)
     {
-
         $NameResult = (new SalesRepository())->searchByName($searchDTO);
 
-        $NumberResult =  (new SalesRepository())->searchByNumber($searchDTO);
+        $NumberResult = null;
 
-        $result = [];
+        if(is_numeric($searchDTO))
+                $NumberResult =  (new SalesRepository())->searchByNumber($searchDTO);
+
+        $results = [];
 
         if($NameResult != null){
-            $result[]= [$NameResult];
+            $results[]= $NameResult;
         }
         if($NumberResult != null){
-            $result[]=[$NumberResult];
+            $results[]=$NumberResult;
         }
-
-        return $result;
-
+        return $results;
     }
 
 }
