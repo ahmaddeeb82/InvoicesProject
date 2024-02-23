@@ -77,15 +77,18 @@ class SalesRepository
         return $totalInvoicesValue;
     }
 
-    public function getTotalSalesValueAtMonth($current_time)
+    public function getTotalSalesValueAtMonth()
     {
-        $totalInvoicesValue = DB::connection(JsonDatabases::$connection_name)->table('bu000')
+        $totalInvoicesValue =[];
+        for($i=1 ; $i<13 ;$i++ )
+        {
+        $totalInvoicesValue[$i] = DB::connection(JsonDatabases::$connection_name)->table('bu000')
             ->join('bt000', 'bu000.TypeGUID', '=', 'bt000.GUID')
             ->select('bu000.*', 'bt000.BillType')
             ->where('BillType', '1')
-            ->whereDate('bu000.Date', $current_time)
+            ->whereMonth('bu000.Date' ,$i)
             ->sum('Total');
-
+        }
         return $totalInvoicesValue;
     }
 
@@ -161,7 +164,6 @@ class SalesRepository
         ->where('Code' ,'>' ,2)
         ->get(['Name', 'Number', 'GUID']);
 
-
         if ($NumberResult != null) {
 
             $salesDTO = [];
@@ -197,5 +199,15 @@ class SalesRepository
         }
 
         return $salesResult;
+    }
+
+    public function GetNumOfBranches()
+    {
+        $result =  DB::connection(JsonDatabases::$connection_name)->table('br000')
+        ->where('Code', '>', 2)
+        ->count();
+
+        return $result;
+        // dd($result);
     }
 }

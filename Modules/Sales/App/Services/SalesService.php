@@ -100,7 +100,6 @@ use Number;
     public function GetAllSalesValue(){
 
         $value =   (new SalesRepository())->getTotalSalesValue();
-
             $data[] =[
             'spelled_total' => Number::spell($value , after:1000 , locale:'ar'),
             'total'=>  $value
@@ -108,20 +107,17 @@ use Number;
         return $data;
     }
 
-    public function GetSalesValueForMonth($date){
+    public function GetSalesValueForMonth()
+    {
+        $value = (new SalesRepository())->getTotalSalesValueAtMonth();
+        for($i=1 ; $i<13 ;$i++ )
+        {
+        $data[$i] =[
+            'spelled_total' => Number::spell($value[$i] , after:1000 , locale:'ar'),
+              'total'=>   $value[$i]
 
-        if($date == null){
-            $selected_month = Carbon::now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
-        }
-        else{
-            $selected_month = Carbon::parse($date);
-        }
-
-        $value = (new SalesRepository())->getTotalSalesValueAtMonth($selected_month);
-        $data[] =[
-            'spelled_total' => Number::spell($value , after:1000 , locale:'ar'),
-              'total'=>   $value
             ];
+        }
         return $data;
     }
 
@@ -150,12 +146,23 @@ use Number;
         $results = [];
 
         if($NameResult != null){
-            $results[]= $NameResult;
+            $results['Name results']= $NameResult;
+            // dd($NumberResult);
         }
+        else
+             $results['Name results']= [];
         if($NumberResult != null){
-            $results[]=$NumberResult;
+            $results['Number results']=$NumberResult;
         }
+        else
+              $results['Number results']= [];
         return $results;
+    }
+
+    public function GetNumOfBranches()
+    {
+        $result = (new SalesRepository)->GetNumOfBranches();
+        return $result;
     }
 
 }

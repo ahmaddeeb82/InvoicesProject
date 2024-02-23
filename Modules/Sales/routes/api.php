@@ -36,6 +36,8 @@ Route::prefix('branches-Sales')->middleware(['auth:sanctum', 'role:Admin|User', 
 
     Route::get('getSalesBetween' , "GetSalesValueBetweenMonths");
 
+    Route::get('num-of-branches' , "GetNumOfBranches");
+
     Route::get('ExcelForm' , "GetBranchesSalesBetweenMonths");
 });
 

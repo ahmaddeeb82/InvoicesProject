@@ -60,12 +60,11 @@ class SalesController extends Controller
         );
     }
 
-    public function GetSalesValueForMonth(Request $request){
-        $date = $request->date;
+    public function GetSalesValueForMonth(){
         return ApiResponse::apiSendResponse(
             200,
             __('messages.retrieved'),
-            (new SalesService)->GetSalesValueForMonth($date)
+            (new SalesService)->GetSalesValueForMonth()
         );
     }
 
@@ -105,6 +104,15 @@ class SalesController extends Controller
 
         return Excel::download($sales_export, 'sales_'.now()->format('Y-m-d').'.xlsx');
 
+    }
+
+    public function GetNumOfBranches()
+    {
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new SalesService)->GetNumOfBranches()
+        );
     }
 
 
