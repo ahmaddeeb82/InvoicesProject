@@ -110,11 +110,13 @@ use Number;
     public function GetSalesValueForMonth()
     {
         $value = (new SalesRepository())->getTotalSalesValueAtMonth();
+        $data = [];
         for($i=1 ; $i<13 ;$i++ )
         {
-        $data[$i] =[
-            'spelled_total' => Number::spell($value[$i] , after:1000 , locale:'ar'),
-              'total'=>   $value[$i]
+        $data []=[
+            'month' => $i,
+            // 'spelled_total' => Number::spell($value[$i] , after:1000 , locale:'ar'),
+            'total'=>   $value[$i]
 
             ];
         }
