@@ -52,6 +52,16 @@ class SalesController extends Controller
         );
     }
 
+    public function GetGreatestBranchSales(){
+        $result =  (new SalesService)->GetGreatestBranchSales();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+           $result[0]
+        );
+    }
+
     public function GetBranchsSales(){
         return ApiResponse::apiSendResponse(
             200,

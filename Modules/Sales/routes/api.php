@@ -19,7 +19,8 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 //     Route::get('sales', fn (Request $request) => $request->user())->name('sales');
 // });
 
-Route::prefix('branches-Sales')->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
+Route::prefix('branches-Sales')
+->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
 ->controller(SalesController::class)
 ->group(function () {
 
@@ -28,6 +29,8 @@ Route::prefix('branches-Sales')->middleware(['auth:sanctum', 'role:Admin|User', 
     Route::get('getBranch' ,   "show");
 
     Route::get('getSortedBranches' , "SortByBranchSales");
+
+    Route::get('getGreatestBranch' , "GetGreatestBranchSales");
 
     Route::get('getSalesValue' , "GetBranchsSales");
 
