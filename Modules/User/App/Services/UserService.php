@@ -41,7 +41,10 @@ class UserService {
                 'message'=> __('messages.loggedin'),
                 'data' => new AuthResource([
                     'id' => $user->id,
-                    'token' => $user->createToken('husain')->plainTextToken
+                    'token' => $user->createToken('husain')->plainTextToken,
+                    'isAdmin' => $user->hasPermissionTo('admin-permession'),
+                    'hasExcel' => $user->hasPermissionTo('export-excel'),
+                    'hasPdf' => $user->hasPermissionTo('export-pdf'),
                 ]),
             ];
         }

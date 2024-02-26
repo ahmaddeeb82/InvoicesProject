@@ -14,6 +14,9 @@ class AuthResource extends JsonResource
         return [
             'user id'=> $this['id'],
             'token' => $this['token'],
+            'is admin' => $this['isAdmin'],
+            'has pdf' => $this['hasPdf'],
+            'has excel' => $this['hasExcel'],
         ];
     }
 }
