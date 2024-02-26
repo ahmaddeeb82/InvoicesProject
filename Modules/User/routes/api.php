@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
     Route::post('add',  'addUser');
     Route::get('list',  'listUsers');
     Route::get('get',  'getUser');
+    Route::get('get-current',  'getCurrentUser');
     Route::post('update',  'updateUser');
     Route::delete('delete',  'deleteUser');
     Route::get('logout', 'logout');

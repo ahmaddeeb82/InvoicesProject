@@ -88,4 +88,10 @@ class UserService {
         
         $user->currentAccessToken()->delete();
     }
+
+    public function getCurrentUser() {
+        $user = auth()->user();
+
+        return  new UserResource($user);
+    }
 }

@@ -114,4 +114,12 @@ class UserController extends Controller
             __('messages.loggedout'),
         );
     }
+
+    public function getCurrentUser() {
+        return  ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            (new UserService(new UserRepository()))->getCurrentUser()
+        );
+    }
 }
