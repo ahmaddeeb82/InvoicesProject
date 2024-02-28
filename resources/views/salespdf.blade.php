@@ -21,27 +21,30 @@ table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
     </style>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
 
     <table>
         <thead>
           <tr>
-            <th style="background-color: #c29a45; color:white; text-align: center;">التاريخ</th>
-            <th width="25" style="background-color: #c29a45; color:white; text-align: center;">القيمة الإجمالية</th>
-            <th width="15" style="background-color: #c29a45; color:white; text-align: center;">رقم الفاتورة</th>
+            <th style="background-color: #c29a45; color:white; text-align: center;">اسم الفرع</th>
+            <th width="25" style="background-color: #c29a45; color:white; text-align: center;">رقم الفرع</th>
+            <th width="15" style="background-color: #c29a45; color:white; text-align: center;">القيمة الإجمالية</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($invoices as $invoice)
-              <tr style="background-color: #f2f2f2;">
-                <td style="border: 1px solid #ddd; text-align: center;">{{ $invoice->Date }}</td>
-                <td width="25" style="border: 1px solid #ddd; text-align: center;">{{ $invoice->Total }}</td>
-                <td width="15" style="border: 1px solid #ddd; text-align: center;">{{ $invoice->Number }}</td>
-              </tr>
+          @foreach ($sales[0] as $sale)
+          <tr style="background-color: #f2f2f2;">
+                <td style="border: 1px solid #ddd; text-align: center;">{{ $sale['branch'] }}</td>
+                <td width="25" style="border: 1px solid #ddd; text-align: center;">{{ $sale['number'] }}</td>
+                <td width="15" style="border: 1px solid #ddd; text-align: center;">{{ $sale['total_Sales'] }}</td>
+          </tr>
           @endforeach
+          <tr style="background-color: #f2f2f2;">
+            <td style="background-color: #c29a45; color:white; text-align: center;">الإجمالي</td>
+            <td colspan="2" style="border: 1px solid #ddd; text-align: center;">{{ $sales[1][0]['total'] }}</td>
+          </tr>
         </tbody>
       </table>
       
