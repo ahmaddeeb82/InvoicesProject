@@ -122,7 +122,7 @@ class SalesController extends Controller
         $startDate = $request->start_date;
         $endDate = $request-> end_date;
 
-        $pdf = SnappyPdf::loadView('invoicespdf', ['sales' => [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
+        $pdf = SnappyPdf::loadView('salespdf', ['sales' => [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
         (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
         ]]);
 
