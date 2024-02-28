@@ -3,6 +3,7 @@
 namespace Modules\Invoice\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Dompdf\Adapter\PDFLib;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,6 +48,19 @@ class InvoiceController extends Controller
         $invoice_export = new InvoicesExport;
         $invoice_export->invoices = (new InvoiceRepository($dto))->GetAllExportInvoices();
         
-    return Excel::download($invoice_export, 'invoices_'.now()->format('Y-m-d').'.xlsx');
+        return Excel::download($invoice_export, 'invoices_'.now()->format('Y-m-d').'.xlsx');
+    }
+
+    public function exportPDF(Request $request) 
+    {
+        $dto = new InvoiceDTO(
+            $request->GUID,
+            $request->first_date,
+            $request->last_date,
+        );
+        
+        $pdf = SnappyPdf::loadView('invoicespdf', ['invoices' => (new InvoiceRepository($dto))->GetAllExportInvoices()]);
+
+        return $pdf->download('invoices_'.now()->format('Y-m-d').'.pdf');
     }
 }

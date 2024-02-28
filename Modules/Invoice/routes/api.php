@@ -18,12 +18,13 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
     // Route::get('invoice', fn (Request $request) => $request->user())->name('invoice');
 });
 
-Route::middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
+Route::middleware(['auth:sanctum', 'session_expiration', 'connection'])
 ->controller(Modules\Invoice\app\Http\Controllers\InvoiceController::class)
 ->prefix('invoices')
 ->group(function() {
-    Route::get('list',  'list');
-    Route::get('search', 'search');
-    Route::get('export', 'export');
+    Route::get('list',  'list')->middleware('role:Admin|User');
+    Route::get('search', 'search')->middleware('role:Admin|User');
+    Route::get('export', 'export')->middleware('permission:export-excel');
+    Route::get('export-pdf', 'exportPDF')->middleware('permission:export-pdf');
 });
 

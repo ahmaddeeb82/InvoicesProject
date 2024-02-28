@@ -4,6 +4,7 @@ namespace Modules\Sales\App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -113,6 +114,19 @@ class SalesController extends Controller
         ];
 
         return Excel::download($sales_export, 'sales_'.now()->format('Y-m-d').'.xlsx');
+
+    }
+
+    public function GetBranchesSalesBetweenMonthsForPDF(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request-> end_date;
+
+        $pdf = SnappyPdf::loadView('invoicespdf', ['sales' => [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
+        (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
+        ]]);
+
+        return $pdf->download('sales_'.now()->format('Y-m-d').'.pdf');
 
     }
 

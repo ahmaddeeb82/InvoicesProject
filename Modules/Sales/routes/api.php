@@ -20,28 +20,30 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 // });
 
 Route::prefix('branches-Sales')
-->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration', 'connection'])
+->middleware(['auth:sanctum', 'session_expiration', 'connection'])
 ->controller(SalesController::class)
 ->group(function () {
 
-    Route::get('All-branches' , "index");
+    Route::get('All-branches' , "index")->middleware('role:Admin|User');
 
-    Route::get('getBranch' ,   "show");
+    Route::get('getBranch' ,   "show")->middleware('role:Admin|User');
 
-    Route::get('getSortedBranches' , "SortByBranchSales");
+    Route::get('getSortedBranches' , "SortByBranchSales")->middleware('role:Admin|User');
 
-    Route::get('getGreatestBranch' , "GetGreatestBranchSales");
+    Route::get('getGreatestBranch' , "GetGreatestBranchSales")->middleware('role:Admin|User');
 
-    Route::get('getSalesValue' , "GetBranchsSales");
+    Route::get('getSalesValue' , "GetBranchsSales")->middleware('role:Admin|User');
 
-    Route::get('GetSalesMonthly',  "GetSalesValueForMonth");
-    Route::get('Search-For' , "searchForBranch");
+    Route::get('GetSalesMonthly',  "GetSalesValueForMonth")->middleware('role:Admin|User');
+    Route::get('Search-For' , "searchForBranch")->middleware('role:Admin|User');
 
-    Route::get('getSalesBetween' , "GetSalesValueBetweenMonths");
+    Route::get('getSalesBetween' , "GetSalesValueBetweenMonths")->middleware('role:Admin|User');
 
-    Route::get('num-of-branches' , "GetNumOfBranches");
+    Route::get('num-of-branches' , "GetNumOfBranches")->middleware('role:Admin|User');
 
-    Route::get('ExcelForm' , "GetBranchesSalesBetweenMonths");
+    Route::get('ExcelForm' , "GetBranchesSalesBetweenMonths")->middleware('permission:export-excel');
+
+    Route::get('PDFForm' , "GetBranchesSalesBetweenMonthsForPDF")->middleware('permission:export-pdf');
 });
 
 // Route::get('branch ' , [SalesController::class , "index"]);
