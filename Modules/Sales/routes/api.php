@@ -41,7 +41,10 @@ Route::prefix('branches-Sales')
 
     Route::get('num-of-branches' , "GetNumOfBranches")->middleware('role:Admin|User');
 
-    Route::get('ExcelForm' , "GetBranchesSalesBetweenMonths")->middleware('permission:export-excel');
+    Route::get('Branches-between-date' , "GetBranchesSalesBetweenMonths")->middleware('role:Admin|User');
+
+
+    Route::get('ExcelForm' , "GetBranchesSalesBetweenMonthsForExcel")->middleware('permission:export-excel');
 
     Route::get('PDFForm' , "GetBranchesSalesBetweenMonthsForPDF")->middleware('permission:export-pdf');
 });

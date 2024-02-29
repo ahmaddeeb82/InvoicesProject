@@ -108,6 +108,23 @@ class SalesController extends Controller
         $startDate = $request->start_date;
         $endDate = $request-> end_date;
 
+        $sales = [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
+        (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
+        ];
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.retrieved'),
+            $sales
+        );
+    }
+
+
+    public function GetBranchesSalesBetweenMonthsForExcel(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request-> end_date;
+
         $sales_export = new SalesExport;
         $sales_export->sales = [ (new SalesService)->GetBranchesSalesBetweenMonths($startDate , $endDate),
         (new SalesService)->GetBranchSalesValueBetweenMonths($startDate , $endDate)
