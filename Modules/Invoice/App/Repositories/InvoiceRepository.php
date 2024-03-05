@@ -36,7 +36,7 @@ class InvoiceRepository
         FROM (
             SELECT [bu000].[Number],[bu000].[Date],[bu000].[Total],[bu000].[Branch]
             ,[bu000].[GUID],[bu000].[TypeGUID], [bt000].[BillType],
-                 ROW_NUMBER() OVER (ORDER BY ([Date])) AS RowNumber
+                 ROW_NUMBER() OVER (ORDER BY ([Date]), [Number]) AS RowNumber
           FROM [bu000]
           INNER JOIN [bt000] ON [bu000].[TypeGUID] = [bt000].[GUID]
           WHERE [BillType] = 1
