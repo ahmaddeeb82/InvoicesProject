@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 });
 
 Route::post('login', [UserController::class, 'login']);
+Route::get('users/get-current',  [UserController::class,'getCurrentUser'])->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration']);
 
 Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
 ->controller(Modules\User\app\Http\Controllers\UserController::class)
@@ -28,7 +29,6 @@ Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
     Route::post('add',  'addUser');
     Route::get('list',  'listUsers');
     Route::get('get',  'getUser');
-    Route::get('get-current',  'getCurrentUser');
     Route::post('update',  'updateUser');
     Route::delete('delete',  'deleteUser');
     Route::get('logout', 'logout');
