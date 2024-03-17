@@ -11,6 +11,8 @@ use Modules\User\app\Repositories\UserRepository;
 use Modules\User\App\resources\AllUserResource;
 use Modules\User\app\Resources\AuthResource;
 use Modules\User\App\resources\UserResource;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserService {
 
@@ -24,13 +26,13 @@ class UserService {
     public function createUser() {
 
         $user = $this->repository->createUser();
-        
+
         $user->assignRole([2]);
 
         if(count($this->repository->dtoArray['permissions']) != 0) {
             $user->givePermissionTo($this->repository->dtoArray['permissions']);
         }
-        
+
     }
 
     public function checkLogin() {
@@ -78,7 +80,7 @@ class UserService {
 
         return ['Users_Count' => count($users), 'Users' => AllUserResource::collection($users)];
     }
-    
+
     public function getUSerById() {
         $user = $this->repository->getUserByID();
 
@@ -91,9 +93,17 @@ class UserService {
 
     public function deleteToken() {
         $user = auth()->user();
-        
+
         $user->currentAccessToken()->delete();
-    }
+
+        request()->session()->invalidate();
+        $sessionFiles = glob(storage_path('framework/sessions') . '/*');
+        foreach ($sessionFiles as $file) {
+            if (is_file($file)) {
+                unlink($file); // Delete individual session files
+            }
+        }
+                }
 
     public function getCurrentUser() {
         $user = auth()->user();
