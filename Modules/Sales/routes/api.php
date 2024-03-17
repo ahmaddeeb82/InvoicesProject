@@ -20,7 +20,7 @@ use Modules\Sales\App\Http\Controllers\SalesController;
 // });
 
 Route::prefix('branches-Sales')
-->middleware(['auth:sanctum', 'session_expiration', 'connection'])
+->middleware(['auth:sanctum', 'connection'])
 ->controller(SalesController::class)
 ->group(function () {
 

@@ -20,10 +20,10 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 });
 
 Route::post('login', [UserController::class, 'login']);
-Route::get('users/get-current',  [UserController::class,'getCurrentUser'])->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration']);
-Route::get('users/logout',  [UserController::class,'logout'])->middleware(['auth:sanctum', 'role:Admin|User', 'session_expiration']);
+Route::get('users/get-current',  [UserController::class,'getCurrentUser'])->middleware(['auth:sanctum', 'role:Admin|User']);
+Route::get('users/logout',  [UserController::class,'logout'])->middleware(['auth:sanctum', 'role:Admin|User']);
 
-Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration'])
+Route::middleware(['auth:sanctum', 'role:Admin'])
 ->controller(Modules\User\app\Http\Controllers\UserController::class)
 ->prefix('users')
 ->group(function() {

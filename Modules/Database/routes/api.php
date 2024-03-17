@@ -19,7 +19,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
     Route::get('database', fn (Request $request) => $request->user())->name('database');
 });
 
-Route::middleware(['auth:sanctum', 'role:Admin', 'session_expiration', 'connection'])
+Route::middleware(['auth:sanctum', 'role:Admin', 'connection'])
 ->controller(Modules\Database\app\Http\Controllers\DatabaseController::class)
 ->prefix('databases')
 ->group(function() {

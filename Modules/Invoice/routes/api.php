@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
     // Route::get('invoice', fn (Request $request) => $request->user())->name('invoice');
 });
 
-Route::middleware(['auth:sanctum', 'session_expiration', 'connection'])
+Route::middleware(['auth:sanctum', 'connection'])
 ->controller(Modules\Invoice\app\Http\Controllers\InvoiceController::class)
 ->prefix('invoices')
 ->group(function() {
