@@ -17,6 +17,7 @@ class AuthResource extends JsonResource
             'is admin' => $this['isAdmin'],
             'has pdf' => $this['hasPdf'],
             'has excel' => $this['hasExcel'],
+            'session_id' => $this['session_id'],
         ];
     }
 }

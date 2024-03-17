@@ -43,7 +43,10 @@ class UserController extends Controller
             $request->password,
         );
 
+        //return $request->header('Cookie');
         $response = (new UserService(new UserRepository($userDto)))->checkLogin();
+
+        //$response['data']['session_id'] = $request->header('Cookie');
 
         return ApiResponse::apiSendResponse(
             $response['code'],

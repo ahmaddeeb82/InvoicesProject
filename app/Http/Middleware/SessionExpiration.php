@@ -20,7 +20,7 @@ class SessionExpiration
         if ($request->session()->has('last_request_time')){
             $last_request_time = $request->session()->get('last_request_time');
             $diff = time() - $last_request_time;
-            if ($diff <=   900) {
+            if ($diff <=   10) {
                 $request->session()->put('last_request_time', time());
                 return $next($request);
             }

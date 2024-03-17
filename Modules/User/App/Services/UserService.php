@@ -2,8 +2,10 @@
 
 namespace Modules\User\app\Services;
 
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Modules\User\app\DTOs\UserDTO;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\App\resources\AllUserResource;
@@ -45,6 +47,7 @@ class UserService {
                     'isAdmin' => $user->hasPermissionTo('admin-permession'),
                     'hasExcel' => $user->hasPermissionTo('export-excel'),
                     'hasPdf' => $user->hasPermissionTo('export-pdf'),
+                    'session_id' => Session::getId(),
                 ]),
             ];
         }
