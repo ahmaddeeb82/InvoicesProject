@@ -26,6 +26,8 @@ Route::middleware(['auth:sanctum', 'role:Admin', 'connection'])
     Route::get('list','list');
     Route::post('set-admin',  'setAdmin');
     Route::post('set-users',  'setUsers');
+    Route::post('set-host',  'setHost');
     Route::get('get-users',  'getUsers');
     Route::get('get-admin',  'getAdmin');
+    Route::get('get-host',  'getHost');
 });

@@ -53,4 +53,14 @@ class DatabaseService {
         file_put_contents($filePath,$newJsonContent);
     }
 
+    public function setDatabaseHost() {
+        $database_name = $this->repository->dtoArray['name'];
+        $filePath = base_path('Modules\Database\connections.json');
+        $fileContent = file_get_contents($filePath);
+        $josnContent = json_decode($fileContent, true);
+        $josnContent['host'] = $database_name;
+        $newJsonContent = json_encode($josnContent);
+        file_put_contents($filePath,$newJsonContent);
+    }
+
 }

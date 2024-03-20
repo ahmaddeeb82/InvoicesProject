@@ -82,7 +82,7 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => JsonDatabases::getDatabaseHost(),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -95,7 +95,7 @@ return [
         ],
         'sqlsrv_second' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SECOND'),
+            'host' => JsonDatabases::getDatabaseHost(),
             'port' => env('DB_PORT_SECOND'),
             'database' => JsonDatabases::getUsersDatabase(),
             'username' => env('DB_USERNAME_SECOND'),
@@ -108,7 +108,7 @@ return [
         ],
         'sqlsrv_admin' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SECOND'),
+            'host' => JsonDatabases::getDatabaseHost(),
             'port' => env('DB_PORT_SECOND'),
             'database' => JsonDatabases::getAdminDatabase(),
             'username' => env('DB_USERNAME_SECOND'),

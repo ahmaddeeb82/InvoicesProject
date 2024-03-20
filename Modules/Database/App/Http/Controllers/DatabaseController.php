@@ -46,6 +46,19 @@ class DatabaseController extends Controller
         );
     }
 
+    public function setHost(DatabaseNameRequest $request) {
+        $dto = new DatabaseDTO(
+            $request->name
+        );
+        
+        (new DatabaseService(new DatabaseRepository($dto)))->setDatabaseHost();
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.updated')
+        );
+    }
+
     public function getAdmin() {
 
         return ApiResponse::apiSendResponse(
@@ -64,4 +77,12 @@ class DatabaseController extends Controller
         );
     }
   
+    public function getHost() {
+
+        return ApiResponse::apiSendResponse(
+            200,
+            __('messages.updated'),
+            ['name' => JsonDatabases::getDatabaseHost()]
+        );
+    }
 }

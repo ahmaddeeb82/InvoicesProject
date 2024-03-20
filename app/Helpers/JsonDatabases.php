@@ -22,4 +22,11 @@ class JsonDatabases {
         $josnContent = json_decode($fileContent, true);
         return $josnContent['users'];
     }
+
+    public static function getDatabaseHost() {
+        $filePath = base_path('Modules\Database\connections.json');
+        $fileContent = file_get_contents($filePath);
+        $josnContent = json_decode($fileContent, true);
+        return $josnContent['host'];
+    }
 }
